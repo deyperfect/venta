@@ -97,7 +97,7 @@ const listingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-listingSchema.pre("save", function (next) {
+listingSchema.pre("save", async function () {
   if (this.isModified("status")) {
     const now = new Date();
     if (this.status === "sold") this.soldAt = now;
@@ -105,7 +105,6 @@ listingSchema.pre("save", function (next) {
     if (this.status === "suspended") this.suspendedAt = now;
     if (this.status === "available") this.reservedAt = null;
   }
-  next();
 });
 
 listingSchema.index({ userId: 1 });
